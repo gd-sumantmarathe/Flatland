@@ -5,16 +5,16 @@ package.path = module_folder .. "?.lua;" .. package.path
 local databaseGame = require("Database")
 local graphicsGame = require("Graphics")
 local physicsGame = require("Physics")
-local screensGame = require("Screens")
+local screenManager = require("ScreenManager")
+local stateManager = require("StateManager")
 local inputsGame = require("Inputs")
 
-gameState = ""
 
 function love.load()
 
 	love.graphics.setFont(graphicsGame.font)
 
-	gameState = "start"
+	stateManager.SetGameState("init")
 	--player = databaseGame.Character:CreateNew("PC", "rectangle")
 	--ground = databaseGame.Map:CreateNew("MAP01", 600, 400)
 end
@@ -22,18 +22,7 @@ end
 
 function love.draw()
 
-	if gameState == "start" then
-		screen = screensGame.LoadScreen("startScreen")
-		graphicsGame.DrawScreen(screen)
-		screensGame.ProcessScreen("startScreen", screen)
-
-	elseif gameState == "inGame" then
-
-	elseif gameState == "pause" then
-
-	else
-
-	end
+	graphicsGame.DrawScreen()
 
 
 
@@ -43,9 +32,12 @@ end
 
 
 function love.update(dt)
-	
+
 	inputsGame.GetInputStates()
 	inputsGame.GetInputEvents()
+
+	stateManager.ProcessState()
+	screenManager.ProcessScreen()
 
 
 	--physicsGame.MovePlayer(player)
