@@ -1,5 +1,6 @@
 local screenManager = require("ScreenManager")
 
+
 local stateManager_table = {}
 
 local gameState = "none"
@@ -20,19 +21,30 @@ end
 
 
 local function ProcessState_Start()
+    nextState = screenManager.ProcessScreen(gameState)
+
+    if nextState == "inGame" then
+        screenManager.LoadScreen("screen_map_00")
+        stateManager_table.SetGameState("inGame")
+    end
 
 
 end
 
 
 local function ProcessState_InGame()
+    nextState = screenManager.ProcessScreen()
 
+    if nextState == "pause" then
+        screenManager.LoadScreen("screen_pause")
+        stateManager_table.SetGameState("pause")
+    end
 
 end
 
 
 local function ProcessState_Pause()
-
+    nextState = screenManager.ProcessScreen()
 
 end
 

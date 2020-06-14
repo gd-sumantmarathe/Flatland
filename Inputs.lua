@@ -7,7 +7,8 @@ local keyEvents =
     eventDownKey = false,
     eventLeftKey = false,
     eventRightKey = false,
-    eventEnterKey = false
+    eventEnterKey = false,
+    eventEscKey = false
 }
 
 local keyStates =
@@ -16,7 +17,8 @@ local keyStates =
     stateDownKey = false,
     stateLeftKey = false,
     stateRightKey = false,
-    stateEnterKey = false
+    stateEnterKey = false,
+    stateEscKey = false
 }
 
 local keyPrevStates =
@@ -25,7 +27,8 @@ local keyPrevStates =
     prevStateDownKey = false,
     prevStateLeftKey = false,
     prevStateRightKey = false,
-    prevStateEnterKey = false
+    prevStateEnterKey = false,
+    prevStateEscKey = false
 }
 
 
@@ -47,6 +50,10 @@ end
 
 function inputs_table.IsEnterKeyPressed()
     return keyStates.stateEnterKey
+end
+
+function inputs_table.IsEscKeyPressed()
+    return keyStates.stateEscKey
 end
 
 
@@ -71,6 +78,10 @@ function inputs_table.IsEnterKeyEvent()
     return keyEvents.eventEnterKey
 end
 
+function inputs_table.IsEscKeyEvent()
+    return keyEvents.eventEscKey
+end
+
 
 function inputs_table.GetInputStates()
 
@@ -79,6 +90,7 @@ function inputs_table.GetInputStates()
     keyStates.stateLeftKey = love.keyboard.isDown("left")
     keyStates.stateRightKey = love.keyboard.isDown("right")
     keyStates.stateEnterKey = love.keyboard.isDown("return")
+    keyStates.stateEscKey = love.keyboard.isDown("escape")
 
 end
 
@@ -159,6 +171,22 @@ function inputs_table.GetInputEvents()
         if keyPrevStates.prevStateEnterKey == true then
             keyEvents.eventEnterKey = false
             keyPrevStates.prevStateEnterKey = false
+        end
+    end
+
+
+    if keyStates.stateEscKey == true then
+        if keyPrevStates.prevStateEscKey == false then
+            keyEvents.eventEscKey = true
+            keyPrevStates.prevStateEscKey = true
+        elseif keyPrevStates.prevStateEscKey == true then
+            keyEvents.eventEscKey = false
+            keyPrevStates.prevStateEscKey = true
+        end
+    elseif not(keyStates.stateEscKey == true) then
+        if keyPrevStates.prevStateEscKey == true then
+            keyEvents.eventEscKey = false
+            keyPrevStates.prevStateEscKey = false
         end
     end
 

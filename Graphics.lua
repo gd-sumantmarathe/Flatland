@@ -35,11 +35,42 @@ local function DrawScreen_Menu(screen)
 
         love.graphics.print(screen.options[count].name, screen.options[count].posX, screen.options[count].posY)
 
-        love.graphics.setColor(255, 255, 255)
+        love.graphics.setColor(1, 1, 1)
 
     end
 
 end
+
+
+
+
+local function DrawScreen_Map(screen)
+
+    love.graphics.setColor(0, 0, 0.2)
+    love.graphics.rectangle("fill", 0, 0, screen.length, screen.breadth)
+    love.graphics.setColor(1, 1, 1)
+
+
+    for count = 0, table.getn(screen.charactersOnMap.character), 1 do
+
+        love.graphics.translate(screen.charactersOnMap.character[count].posX, screen.charactersOnMap.character[count].posY)
+        love.graphics.rotate(screen.charactersOnMap.character[count].angle * (math.pi / 180))
+        love.graphics.translate(-screen.charactersOnMap.character[count].posX, -screen.charactersOnMap.character[count].posY)
+
+        if screen.charactersOnMap.character[count].shapeType == "rectangle" then
+          love.graphics.rectangle("fill", (screen.charactersOnMap.character[count].posX - screen.charactersOnMap.character[count].length / 2), (screen.charactersOnMap.character[count].posY - screen.charactersOnMap.character[count].breadth / 2), screen.charactersOnMap.character[count].length, screen.charactersOnMap.character[count].breadth)
+        end
+
+
+    end
+
+
+
+
+
+end
+
+
 
 
 function graphics_table.DrawScreen ()
@@ -50,6 +81,8 @@ function graphics_table.DrawScreen ()
 
     if currScreen.type == "menu" then
         DrawScreen_Menu(currScreen)
+    elseif currScreen.type == "map" then
+        DrawScreen_Map(currScreen)
     end
 
 end

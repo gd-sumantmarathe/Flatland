@@ -1,19 +1,14 @@
 local inputsGame = require("Inputs")
+local databaseGame = require("Database")
+local physicsGame = require("Physics")
 
 local startScreen = require("Screen_StartScreen")
+local pauseScreen = require("Screen_PauseScreen")
+local map00 = require("Screen_Map00")
 
 local screenManager_table = {}
 
-local currScreen =
-{
-    length,
-    breadth,
-    name,
-    selectedOption,
-    type,
-
-    options = {}
-}
+local currScreen = {}
 
 local keyPressedTime = 0
 
@@ -23,7 +18,12 @@ function screenManager_table.LoadScreen(screen)
         currScreen = startScreen.contents
 
     elseif screen == "screen_pause" then
+        currScreen = pauseScreen.contents
 
+    elseif screen == "screen_map_00" then
+        currScreen = map00.contents
+        player = databaseGame.Character:CreateNew("PC", "rectangle")
+        map00.AddCharacter(player)
     end
 
 end
@@ -34,7 +34,7 @@ function screenManager_table.GetCurrentScreen()
 end
 
 
-local function ProcessScreen_Menu()
+local function ProcessScreen_Menu(retState)
 
     local prevSelectedOption = 0
     local currTime = love.timer.getTime()
@@ -92,21 +92,51 @@ local function ProcessScreen_Menu()
     end
 
 
+    if inputsGame.IsEnterKeyEvent() == true then
+
+        if currScreen.options[currScreen.selectedOption].name == "Start Game" then
+            retState = "inGame"
+        elseif currScreen.options[currScreen.selectedOption].name == "Options" then
+
+        elseif currScreen.options[currScreen.selectedOption].name == "Continue" then
+
+        elseif currScreen.options[currScreen.selectedOption].name == "Exit" then
+            love.event.quit()
+        end
+
+    end
 
 
+    return retState
 
+end
+
+
+local function ProcessScreen_Map(retState)
+
+    physicsGame.MovePlayer(player)
+    if inputsGame.IsEscKeyEvent() == true then
+        retState = "pause"
+    end
+
+    return retState
 
 end
 
 
 
-function screenManager_table.ProcessScreen()
+
+function screenManager_table.ProcessScreen(gameState)
+
+    local retState = gameState
 
     if currScreen.type == "menu" then
-
-        ProcessScreen_Menu()
-
+        retState = ProcessScreen_Menu(retState)
+    elseif currScreen.type == "map" then
+        retState = ProcessScreen_Map(retState)
     end
+
+    return retState
 
 end
 

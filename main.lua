@@ -15,18 +15,16 @@ function love.load()
 	love.graphics.setFont(graphicsGame.font)
 
 	stateManager.SetGameState("init")
-	--player = databaseGame.Character:CreateNew("PC", "rectangle")
-	--ground = databaseGame.Map:CreateNew("MAP01", 600, 400)
+
 end
 
 
 function love.draw()
 
+
 	graphicsGame.DrawScreen()
 
 
-
-	--graphicsGame.DrawCharacter(player)
 
 end
 
@@ -37,7 +35,7 @@ function love.update(dt)
 	inputsGame.GetInputEvents()
 
 	stateManager.ProcessState()
-	screenManager.ProcessScreen()
+
 
 
 	--physicsGame.MovePlayer(player)

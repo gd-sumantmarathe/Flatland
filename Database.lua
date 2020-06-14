@@ -4,6 +4,10 @@ local database_table = {}
 database_table.Character = {}
 database_table.Map = {}
 
+
+
+
+
 playerStartingPosX = (love.graphics.getWidth() / 2)
 playerStartingPosY = (love.graphics.getHeight() / 2)
 playerStartingAngle = 270
@@ -54,8 +58,6 @@ function database_table.Map:CreateNew (mapName, mapLength, mapBreadth)
     mapTable.mapName = mapName
     mapTable.mapLength = mapLength
     mapTable.mapBreadth = mapBreadth
-
-
 
 end
 
