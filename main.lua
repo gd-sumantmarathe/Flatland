@@ -25,7 +25,6 @@ function love.draw()
 	graphicsGame.DrawScreen()
 
 
-
 end
 
 
